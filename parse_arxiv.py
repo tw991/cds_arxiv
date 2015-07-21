@@ -76,9 +76,10 @@ class arxiv:
     def verify(self):
         remove_list = []
         for count in pyprind.prog_bar(range(len(self.pdf))):
-            os.system('wget -q -U "Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3" -O ./check.pdf %s' %self.pdf[count])
+            os.system('wget -q -U "Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.2.3) Gecko/20100401 '
+                      'Firefox/3.6.3" -O ./check.pdf %s' %self.pdf[count])
             text = convert('./check.pdf',pages=[0,1,2]).lower()
-            if text.find('nyu') or text.find('new york university'):
+            if text.find('nyu') != -1 or text.find('new york university') != -1:
                 continue
             else:
                 remove_list.append(count)
@@ -100,3 +101,4 @@ if __name__ == '__main__':
     test.parse()
     print test.count
     print len(test.title)
+    test.verify()
