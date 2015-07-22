@@ -88,7 +88,7 @@ class arxiv:
     def institution_verify(self, save=False, institution=['nyu', 'new york university']):
         remove_list = []
         if save == True:
-            os.system('mkdir ./paper/%s/' %self.author)
+            os.mkdir('./paper/%s/' %self.author)
         for count in pyprind.prog_bar(range(len(self.pdf))):
             if save == False:
                 os.system('wget -q -U "Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.2.3) Gecko/20100401 '
