@@ -86,53 +86,56 @@ class arxiv:
         self.subject = combine_subject(self.category)
 
     def institution_verify(self, save=False, institution=['nyu', 'new york university']):
-        remove_list = []
-        if save == True and not os.path.exists('./paper/%s/' %self.author):
-            os.makedirs('./paper/%s/' %self.author)
-        for count in pyprind.prog_bar(range(len(self.pdf))):
-            os.system('wget -q -U "Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.2.3) Gecko/20100401 '
-                      'Firefox/3.6.3" -O ./check.pdf %s' %self.pdf[count])
-            if save == True:
-                os.system('cp ./check.pdf ./paper/%s/%s.pdf' %(self.author, self.arxiv_id[count]))
-            text = convert('./check.pdf', pages=[0,1,2]).lower()
-            match_flag = False
-            for match_text in institution:
-                if text.find(match_text) != -1:
-                    match_flag = True
-                    break
-            if match_flag == True:
-                continue
-            else:
-                remove_list.append(count)
-                print self.title[count]
-        os.system("rm ./check.pdf")
-        self.arxiv_id = list(np.delete(np.array(self.arxiv_id), remove_list))
-        self.time = list(np.delete(np.array(self.time), remove_list))
-        self.title = list(np.delete(np.array(self.title), remove_list))
-        self.category = list(np.delete(np.array(self.category), remove_list))
-        self.pdf = list(np.delete(np.array(self.pdf), remove_list))
-        self.contributor = list(np.delete(np.array(self.contributor), remove_list))
-        self.count = len(self.title)
-        self.subject = combine_subject(self.category)
-        print('Remove %d articles' %len(remove_list))
+        if self.count != 0:
+            remove_list = []
+            if save == True and not os.path.exists('./paper/%s/' %self.author):
+                os.makedirs('./paper/%s/' %self.author)
+            for count in pyprind.prog_bar(range(len(self.pdf))):
+                os.system('wget -q -U "Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.2.3) Gecko/20100401 '
+                          'Firefox/3.6.3" -O ./check.pdf %s' %self.pdf[count])
+                if save == True:
+                    os.system('cp ./check.pdf ./paper/%s/%s.pdf' %(self.author, self.arxiv_id[count]))
+                text = convert('./check.pdf', pages=[0,1,2]).lower()
+                match_flag = False
+                for match_text in institution:
+                    if text.find(match_text) != -1:
+                        match_flag = True
+                        break
+                if match_flag == True:
+                    continue
+                else:
+                    remove_list.append(count)
+                    print self.title[count]
+            os.system("rm ./check.pdf")
+            self.arxiv_id = list(np.delete(np.array(self.arxiv_id), remove_list))
+            self.time = list(np.delete(np.array(self.time), remove_list))
+            self.title = list(np.delete(np.array(self.title), remove_list))
+            self.category = list(np.delete(np.array(self.category), remove_list))
+            self.pdf = list(np.delete(np.array(self.pdf), remove_list))
+            self.contributor = list(np.delete(np.array(self.contributor), remove_list))
+            self.count = len(self.title)
+            self.subject = combine_subject(self.category)
+            print('Remove %d articles' % len(remove_list))
 
-    def subject_verify(self):
-        subject_list = copy.copy(self.subject)
-        remove_list = []
-        self.query()
-        self.parse()
-        for count in pyprind.prog_bar(range(len(self.title))):
-            if len(set(subject_list) & set(self.category[count])) == 0:
-                remove_list.append(count)
-        self.arxiv_id = list(np.delete(np.array(self.arxiv_id), remove_list))
-        self.time = list(np.delete(np.array(self.time), remove_list))
-        self.title = list(np.delete(np.array(self.title), remove_list))
-        self.category = list(np.delete(np.array(self.category), remove_list))
-        self.pdf = list(np.delete(np.array(self.pdf), remove_list))
-        self.contributor = list(np.delete(np.array(self.contributor), remove_list))
-        self.count = len(self.title)
-        self.subject = combine_subject(self.category)
-        print('Remove %d articles' %len(remove_list))
+
+def subject_verify(new_arxiv):
+    subject_list = copy.copy(new_arxiv.subject)
+    remove_list = []
+    new_ver = arxiv(new_arxiv.author)
+    new_ver.parse()
+    for count in pyprind.prog_bar(range(len(new_ver.title))):
+        if len(set(subject_list) & set(new_ver.category[count])) == 0:
+            remove_list.append(count)
+    new_ver.arxiv_id = list(np.delete(np.array(new_ver.arxiv_id), remove_list))
+    new_ver.time = list(np.delete(np.array(new_ver.time), remove_list))
+    new_ver.title = list(np.delete(np.array(new_ver.title), remove_list))
+    new_ver.category = list(np.delete(np.array(new_ver.category), remove_list))
+    new_ver.pdf = list(np.delete(np.array(new_ver.pdf), remove_list))
+    new_ver.contributor = list(np.delete(np.array(new_ver.contributor), remove_list))
+    new_ver.count = len(new_ver.title)
+    new_ver.subject = combine_subject(new_ver.category)
+    print('Remove %d articles' % len(remove_list))
+    return new_ver
 
 
 
@@ -147,5 +150,5 @@ if __name__ == '__main__':
     print len(test.title)
     test.institution_verify()
     print test.contributor
-    test.subject_verify()
+    test = subject_verify(test)
     print test.count
