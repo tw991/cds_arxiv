@@ -107,7 +107,7 @@ class arxiv:
                 print self.title[count]
         os.system("rm ./check.pdf")
         self.arxiv_id = list(np.delete(np.array(self.arxiv_id), remove_list))
-        self.time = list(np.delete(np.array(self.arxiv_id), remove_list))
+        self.time = list(np.delete(np.array(self.time), remove_list))
         self.title = list(np.delete(np.array(self.title), remove_list))
         self.category = list(np.delete(np.array(self.category), remove_list))
         self.pdf = list(np.delete(np.array(self.pdf), remove_list))
