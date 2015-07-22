@@ -98,7 +98,7 @@ class arxiv:
             text = convert('./check.pdf', pages=[0,1,2]).lower()
             match_flag = False
             for match_text in institution:
-                if match_text in text:
+                if text.find(match_text) != -1:
                     match_flag = True
                     break
             if match_flag == True:
