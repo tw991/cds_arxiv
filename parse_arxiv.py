@@ -75,10 +75,10 @@ class arxiv:
         self.count = int(self.feed.feed.opensearch_totalresults)
         for entry in self.feed.entries:
             self.arxiv_id.append(entry.id.split('/abs/')[-1])
-            self.time.append(entry.published)
+            self.time.append(author.name for author in entry.published)
             self.title.append(entry.title.replace('\n', '').replace('  ', ' '))
             self.category.append([t['term'] for t in entry.tags])
-            self.contributor.append(entry.contributors)
+            self.contributor.append([author.name for author in entry.contributors])
             for link in entry.links:
                 if 'title' in link.keys():
                     if link.title == 'pdf':
@@ -145,4 +145,7 @@ if __name__ == '__main__':
     test.parse()
     print test.count
     print len(test.title)
-    test.institution_verify(save=True)
+    test.institution_verify()
+    print test.contributor
+    test.subject_verify()
+    print test.count
