@@ -119,12 +119,13 @@ class arxiv:
     def subject_verify(self):
         subject_list = copy.copy(self.subject)
         remove_list = []
+        self.query()
         self.parse()
         for count in pyprind.prog_bar(range(len(self.title))):
             if len(set(subject_list) & set(self.category[count])) == 0:
                 remove_list.append(count)
         self.arxiv_id = list(np.delete(np.array(self.arxiv_id), remove_list))
-        self.time = list(np.delete(np.array(self.arxiv_id), remove_list))
+        self.time = list(np.delete(np.array(self.time), remove_list))
         self.title = list(np.delete(np.array(self.title), remove_list))
         self.category = list(np.delete(np.array(self.category), remove_list))
         self.pdf = list(np.delete(np.array(self.pdf), remove_list))
