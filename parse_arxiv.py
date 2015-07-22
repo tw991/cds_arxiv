@@ -87,13 +87,12 @@ class arxiv:
 
     def institution_verify(self, save=False, institution=['nyu', 'new york university']):
         remove_list = []
-        if save == True:
+        if save == True and not os.path.exists('./paper/%s/' %self.author):
             os.makedirs('./paper/%s/' %self.author)
         for count in pyprind.prog_bar(range(len(self.pdf))):
-            if save == False:
-                os.system('wget -q -U "Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.2.3) Gecko/20100401 '
-                          'Firefox/3.6.3" -O ./check.pdf %s' %self.pdf[count])
-            else:
+            os.system('wget -q -U "Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.2.3) Gecko/20100401 '
+                      'Firefox/3.6.3" -O ./check.pdf %s' %self.pdf[count])
+            if save == True:
                 os.system('cp ./check.pdf ./paper/%s/%s.pdf' %(self.author, self.arxiv_id[count]))
             text = convert('./check.pdf', pages=[0,1,2]).lower()
             match_flag = False
@@ -141,8 +140,8 @@ class arxiv:
 
 
 if __name__ == '__main__':
-    test = arxiv('Hogg_David')
+    test = arxiv('Sontag_David')
     test.parse()
     print test.count
     print len(test.title)
-    test.verify()
+    test.institution_verify(save=True)
