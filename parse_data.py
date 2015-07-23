@@ -72,9 +72,6 @@ def main():
             save_dict['First Name'] = firstname
             save_dict['Last Name'] = lastname
             save_dict['Query_text'] = query.author
-            save_dict['Arxiv_id'] = query.arxiv_id[j]
-            save_dict['Time'] = query.time[j]
-            save_dict['Subject'] = query.category[j]
             save_dict['Count'] = count
             save_dict['Inst_Count'] = inst_count
             save_dict['Raw_Count'] = raw_count
