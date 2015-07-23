@@ -101,16 +101,21 @@ class arxiv:
                         if not os.path.exists('./paper/%s/%s/' % (self.author, temp_dir)):
                             os.makedirs('./paper/%s/%s/' % (self.author, temp_dir))
                     shutil.copy('./check.pdf', './paper/%s/%s.pdf' %(self.author, self.arxiv_id[count]))
-                text = convert('./check.pdf', pages=[0,1,2]).lower()
-                match_flag = False
-                for match_text in institution:
-                    if text.find(match_text) != -1:
-                        match_flag = True
-                        break
-                if match_flag == True:
-                    continue
-                else:
+                try:
+                    text = convert('./check.pdf', pages=[0,1,2]).lower()
+                    match_flag = False
+                    for match_text in institution:
+                        if text.find(match_text) != -1:
+                            match_flag = True
+                            break
+                    if match_flag == True:
+                        continue
+                    else:
+                        remove_list.append(count)
+                except:
+                    print("Can not read file %s" % self.arxiv_id[count])
                     remove_list.append(count)
+                    continue
             os.system("rm ./check.pdf")
             self.arxiv_id = list(np.delete(np.array(self.arxiv_id), remove_list))
             self.time = list(np.delete(np.array(self.time), remove_list))
