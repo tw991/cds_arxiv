@@ -34,10 +34,13 @@ def convert(fname, pages=None):
 
 
 def combine_subject(sub_list):
-    out_set = []
-    for lst in sub_list:
-        out_set = list(set(out_set + lst))
-    return out_set
+    if isinstance(sub_list[0], unicode) or isinstance(sub_list[0], str):
+        return sub_list
+    else:
+        out_set = []
+        for lst in sub_list:
+            out_set = list(set(out_set + lst))
+        return out_set
 
 
 class arxiv:
