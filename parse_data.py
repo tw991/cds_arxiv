@@ -32,7 +32,7 @@ def get_initial_query(firstname):
 
 def read_name_list(file):
     data = pd.read_csv(file)
-    data = data.iloc[8:10]
+    data = data.iloc[:10]
     firstname = data['First Name']
     lastname = data['Last Name']
     return firstname, lastname
