@@ -32,7 +32,7 @@ def get_initial_query(firstname):
 
 def read_name_list(file):
     data = pd.read_csv(file)
-    data = data.iloc[:10]
+    data = data.iloc[10:]
     firstname = data['First Name']
     lastname = data['Last Name']
     return firstname, lastname
@@ -82,7 +82,7 @@ def main():
                 col_author = 'Contributor_%d' % count_contributor
                 save_dict[col_author] = coauthor
                 count_contributor += 1
-                if count_contributor > 99:
+                if count_contributor > 199:
                     break
             data = data.append(save_dict, ignore_index=True)
         data.to_csv('./out.csv',encoding='utf-8')
