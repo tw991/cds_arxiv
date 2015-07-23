@@ -85,7 +85,7 @@ def main():
                 if count_contributor > 99:
                     break
             data = data.append(save_dict, ignore_index=True)
-    data.to_csv('./out.csv',encoding='utf-8')
+        data.to_csv('./out.csv',encoding='utf-8')
 
 
 
