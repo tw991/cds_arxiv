@@ -96,6 +96,9 @@ class arxiv:
                           'Firefox/3.6.3" -O ./check.pdf %s' %self.pdf[count])
                 if save == True:
                     #os.system('cp ./check.pdf ./paper/%s/%s.pdf' %(self.author, self.arxiv_id[count]))
+                    if len(self.arxiv_id[count].split('/')) >1 :
+                        temp_dir = self.arxiv_id[count].split('/')[0]
+                        os.makedirs('./paper/%s/%s/' % (self.author, temp_dir))
                     shutil.copy('./check.pdf', './paper/%s/%s.pdf' %(self.author, self.arxiv_id[count]))
                 text = convert('./check.pdf', pages=[0,1,2]).lower()
                 match_flag = False
