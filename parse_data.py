@@ -75,6 +75,7 @@ def main():
             save_dict['Count'] = count
             save_dict['Inst_Count'] = inst_count
             save_dict['Raw_Count'] = raw_count
+            data = data.append(save_dict, ignore_index=True)
         else:
             for j in range(query.count):
                 count_contributor = 0

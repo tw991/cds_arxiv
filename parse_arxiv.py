@@ -34,13 +34,10 @@ def convert(fname, pages=None):
 
 
 def combine_subject(sub_list):
-    if isinstance(sub_list[0], unicode) or isinstance(sub_list[0], str):
-        return sub_list
-    else:
-        out_set = []
-        for lst in sub_list:
-            out_set = list(set(out_set + lst))
-        return out_set
+    out_set = []
+    for lst in sub_list:
+        out_set = list(set(out_set + lst))
+    return out_set
 
 
 class arxiv:
@@ -124,12 +121,12 @@ class arxiv:
                     remove_list.append(count)
                     continue
             os.system("rm ./check.pdf")
-            self.arxiv_id = list(np.delete(np.array(self.arxiv_id), remove_list))
-            self.time = list(np.delete(np.array(self.time), remove_list))
-            self.title = list(np.delete(np.array(self.title), remove_list))
-            self.category = list(np.delete(np.array(self.category), remove_list))
-            self.pdf = list(np.delete(np.array(self.pdf), remove_list))
-            self.contributor = list(np.delete(np.array(self.contributor), remove_list))
+            self.arxiv_id = list(np.delete(np.array(self.arxiv_id), remove_list, axis=0))
+            self.time = list(np.delete(np.array(self.time), remove_list, axis=0))
+            self.title = list(np.delete(np.array(self.title), remove_list, axis=0))
+            self.category = list(np.delete(np.array(self.category), remove_list, axis=0))
+            self.pdf = list(np.delete(np.array(self.pdf), remove_list, axis=0))
+            self.contributor = list(np.delete(np.array(self.contributor), remove_list, axis=0))
             self.count = len(self.title)
             self.subject = combine_subject(self.category)
             print('Remove %d articles' % len(remove_list))
