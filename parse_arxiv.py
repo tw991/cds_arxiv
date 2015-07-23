@@ -78,7 +78,11 @@ class arxiv:
             self.arxiv_id.append(entry.id.split('/abs/')[-1])
             self.time.append(entry.published[:10])
             self.title.append(entry.title.replace('\n', '').replace('  ', ' '))
-            self.category.append([t['term'] for t in entry.tags])
+            category_pre = [t['term'] for t in entry.tags]
+            for cat in category_pre:
+                if len(cat.split(', '))>1:
+                    category_pre.remove(cat)
+            self.category.append(category_pre)
             self.contributor.append([author.name for author in entry.contributors])
             for link in entry.links:
                 if 'title' in link.keys():

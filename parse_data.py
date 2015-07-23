@@ -57,6 +57,7 @@ def main():
         name_query = create_name_query(firstname, lastname)
         query = arxiv(initial_query)
         query.parse()
+        print(name_query)
         if query.count > 500:
             query = arxiv(name_query)
             query.parse()
@@ -66,8 +67,7 @@ def main():
         inst_count = query.count
         query = subject_verify(query)
         count = query.count
-        for j in range(query.count):
-            count_contributor = 0
+        if count == 0:
             save_dict = {}
             save_dict['First Name'] = firstname
             save_dict['Last Name'] = lastname
@@ -78,13 +78,26 @@ def main():
             save_dict['Count'] = count
             save_dict['Inst_Count'] = inst_count
             save_dict['Raw_Count'] = raw_count
-            for coauthor in query.contributor[j]:
-                col_author = 'Contributor_%d' % count_contributor
-                save_dict[col_author] = coauthor
-                count_contributor += 1
-                if count_contributor > 199:
-                    break
-            data = data.append(save_dict, ignore_index=True)
+        else:
+            for j in range(query.count):
+                count_contributor = 0
+                save_dict = {}
+                save_dict['First Name'] = firstname
+                save_dict['Last Name'] = lastname
+                save_dict['Query_text'] = query.author
+                save_dict['Arxiv_id'] = query.arxiv_id[j]
+                save_dict['Time'] = query.time[j]
+                save_dict['Subject'] = query.category[j]
+                save_dict['Count'] = count
+                save_dict['Inst_Count'] = inst_count
+                save_dict['Raw_Count'] = raw_count
+                for coauthor in query.contributor[j]:
+                    col_author = 'Contributor_%d' % count_contributor
+                    save_dict[col_author] = coauthor
+                    count_contributor += 1
+                    if count_contributor > 199:
+                        break
+                data = data.append(save_dict, ignore_index=True)
         data.to_csv('./out.csv',encoding='utf-8')
 
 
