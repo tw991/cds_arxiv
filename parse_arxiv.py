@@ -141,12 +141,12 @@ def subject_verify(new_arxiv):
         for count in pyprind.prog_bar(range(len(new_ver.title))):
             if len(set(subject_list) & set(new_ver.category[count])) == 0:
                 remove_list.append(count)
-        new_ver.arxiv_id = (np.delete(np.array(new_ver.arxiv_id), remove_list)).tolist()
-        new_ver.time = (np.delete(np.array(new_ver.time), remove_list)).tolist()
-        new_ver.title = (np.delete(np.array(new_ver.title), remove_list)).tolist()
-        new_ver.category = (np.delete(np.array(new_ver.category), remove_list)).tolist()
-        new_ver.pdf = (np.delete(np.array(new_ver.pdf), remove_list)).tolist()
-        new_ver.contributor = (np.delete(np.array(new_ver.contributor), remove_list)).tolist()
+        new_ver.arxiv_id = (np.delete(np.array(new_ver.arxiv_id), remove_list, axis=0)).tolist()
+        new_ver.time = (np.delete(np.array(new_ver.time), remove_list, axis=0)).tolist()
+        new_ver.title = (np.delete(np.array(new_ver.title), remove_list, axis=0)).tolist()
+        new_ver.category = (np.delete(np.array(new_ver.category), remove_list, axis=0)).tolist()
+        new_ver.pdf = (np.delete(np.array(new_ver.pdf), remove_list, axis=0)).tolist()
+        new_ver.contributor = (np.delete(np.array(new_ver.contributor), remove_list, axis=0)).tolist()
         new_ver.count = len(new_ver.title)
         new_ver.subject = combine_subject(new_ver.category)
         print('Remove %d articles' % len(remove_list))
